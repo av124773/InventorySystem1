@@ -116,4 +116,61 @@ public class MySqlProductRepository : IProductRepository
         }
         return product;
     }
+
+    public void AddProduct(Product product)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            connection.Open();
+            string inserSql = @"INSERT INTO products (id, name, price, quantity, status) 
+                                value (@id, @name, @price, @quantity, @status)";
+            using (MySqlCommand cmd = new MySqlCommand(inserSql, connection))
+            {
+                // 防止sql injection
+                cmd.Parameters.AddWithValue("@id", product.Id);
+                cmd.Parameters.AddWithValue("@name", product.Name);
+                cmd.Parameters.AddWithValue("@price", product.Price);
+                cmd.Parameters.AddWithValue("@quantity", product.Quantity);
+                cmd.Parameters.AddWithValue("@status", product.Status);
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
+
+    public int GetNextProductId()
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            connection.Open();
+            string inserSql = @"SELECT IFNULL(MAX(id),0) FROM products";
+            using (MySqlCommand cmd = new MySqlCommand(inserSql, connection))
+            {
+                var result = cmd.ExecuteScalar();
+                if (result != null)
+                {
+                    return Convert.ToInt32(result) + 1;
+                }
+                return 0;
+            }
+        }
+    }
+
+    public void UpdateProduct(Product product)
+    {
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            connection.Open();
+            string inserSql = @"UPDATE products SET name=@name, price=@price, quantity=@quantity WHERE id=@id";
+            using (MySqlCommand cmd = new MySqlCommand(inserSql, connection))
+            {
+                // 防止sql injection
+                cmd.Parameters.AddWithValue("@id", product.Id);
+                cmd.Parameters.AddWithValue("@name", product.Name);
+                cmd.Parameters.AddWithValue("@price", product.Price);
+                cmd.Parameters.AddWithValue("@quantity", product.Quantity);
+                cmd.Parameters.AddWithValue("@status", product.Status);
+                cmd.ExecuteNonQuery();
+            }
+        }
+    }
 }
