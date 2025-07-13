@@ -63,7 +63,7 @@ void RunMenu()
         {
             case "1": GetAllProducts();
                 break;
-            case "2": SearchProduct();
+            case "2": SearchProductById();
                 break;
             case "3": AddProduct();
                 break;
@@ -110,7 +110,6 @@ void GetAllProducts()
 
 void SearchProductById()
 {
-    // throw new NotImplementedException();
     Console.WriteLine("輸入欲查詢的產品編號");
     int intput = ReadIntLine(defaultValue: 1);
     var product = inventoryServices.GetProductById(intput);
