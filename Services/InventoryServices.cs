@@ -107,6 +107,7 @@ public class InventoryServices
             product.Name = name;
             product.Price = price;
             product.Quantity = quantity;
+            product.UpdateStatus();
             _productRepository.UpdateProduct(product);
             Console.WriteLine($"產品ID:{product.Id} 已更新。");
         }
@@ -194,5 +195,29 @@ public class InventoryServices
             Console.WriteLine($"讀取產品列表失敗: {e.Message}");
             return new List<Product>();
         }
+    }
+
+    public void AdjustProductQuantity(Product product, int quantity)
+    {
+        try
+        {
+            int newQuantity = product.Quantity + quantity;
+            if (newQuantity < 0)
+            {
+                Console.WriteLine($"庫存不足，輸入為 {quantity} 當前庫存為 {product.Quantity}");
+            }
+        
+            product.Quantity = newQuantity;
+            product.UpdateStatus();
+            _productRepository.UpdateProduct(product);
+            
+            Console.WriteLine($"成功更新產品: {product.Name}，當前庫存為 {newQuantity}");
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"錯誤: {e.Message}");
+            throw;
+        }
+        
     }
 }

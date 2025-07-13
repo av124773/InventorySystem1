@@ -160,7 +160,9 @@ public class MySqlProductRepository : IProductRepository
         using (var connection = new MySqlConnection(_connectionString))
         {
             connection.Open();
-            string inserSql = @"UPDATE products SET name=@name, price=@price, quantity=@quantity WHERE id=@id";
+            string inserSql = @"UPDATE products 
+                                SET name=@name, price=@price, quantity=@quantity, status=@status 
+                                WHERE id=@id";
             using (MySqlCommand cmd = new MySqlCommand(inserSql, connection))
             {
                 // 防止sql injection
@@ -180,7 +182,7 @@ public class MySqlProductRepository : IProductRepository
         using (var connection = new MySqlConnection(_connectionString))
         {
             connection.Open();
-            string selectSql = "SELECT * FROM products WHERE quantity = 0 ";
+            string selectSql = "SELECT * FROM products WHERE status = 2 ";
             // 1 box
             // 2 dish
             // 3 phone

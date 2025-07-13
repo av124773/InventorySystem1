@@ -48,7 +48,7 @@ public class Product
         {
             Status = ProductStatus.OutOfStock;
         }
-        else if (Quantity < 10)
+        else if (Quantity < 10 && Quantity > 0)
         {
             Status = ProductStatus.LowStock;
         }
