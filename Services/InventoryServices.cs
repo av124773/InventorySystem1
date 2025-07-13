@@ -147,4 +147,33 @@ public class InventoryServices
         }
     }
 
+    bool keyword(Product product, string input)
+    {
+        return product.Name.ToLower().Contains(input.ToLower());
+    }
+
+    public List<Product> SearchLowStock()
+    {
+        try
+        {
+            List<Product> products = _productRepository.GetAllProducts();
+            
+            var results = products
+                .Where(product => product.Quantity < 10)
+                .Where(products => products.Status == Product.ProductStatus.LowStock)
+                .OrderBy(product => product.Name)
+                .ToList();
+
+            if (!results.Any())
+            {
+                Console.WriteLine("No products found");
+            }
+            return results;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"讀取產品列表失敗: {e.Message}");
+            return new List<Product>();
+        }
+    }
 }

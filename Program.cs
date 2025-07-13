@@ -71,6 +71,8 @@ void RunMenu()
                 break;
             case "5": SearchProduct();
                 break;
+            case "6": SearchLowStock();
+                break;
             case "0": 
                 Console.WriteLine("Goodbye !");
                 return;
@@ -83,7 +85,7 @@ void DisplayMenu()
     Console.WriteLine("Welcome to the inventory system!");
     Console.WriteLine("What would you like to do?");
     Console.WriteLine("1. 查看所有產品");
-    Console.WriteLine("2. 查詢產品");
+    Console.WriteLine("2. 查詢產品ID");
     Console.WriteLine("3. 新增產品");
     Console.WriteLine("4. 更新產品");
     Console.WriteLine("5. 查詢產品");
@@ -106,7 +108,7 @@ void GetAllProducts()
     emailService.NotifyUser(recipient: "kevin", message: "已顯示所有產品!");
 }
 
-void SearchProduct()
+void SearchProductById()
 {
     // throw new NotImplementedException();
     Console.WriteLine("輸入欲查詢的產品編號");
@@ -130,6 +132,23 @@ void SearchProduct()
     if (products.Any())
     {
         Console.WriteLine($"-------------- 查詢條件為: ({input}) ------------");
+        Console.WriteLine("ID | Name | Price | Quantity | Status");
+        Console.WriteLine("-----------------------------------------------");
+        foreach (var product in products)
+        {
+            Console.WriteLine(product);
+        }
+        Console.WriteLine("-----------------------------------------------");
+    }
+}
+
+void SearchLowStock()
+{
+    Console.WriteLine("查詢低庫存產品:");
+    List<Product> products = inventoryServices.SearchLowStock();
+    if (products.Any())
+    {
+        Console.WriteLine($"-------------- 查詢條件為: (低庫存) ------------");
         Console.WriteLine("ID | Name | Price | Quantity | Status");
         Console.WriteLine("-----------------------------------------------");
         foreach (var product in products)
