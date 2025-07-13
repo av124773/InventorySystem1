@@ -176,4 +176,23 @@ public class InventoryServices
             return new List<Product>();
         }
     }
+
+    public List<Product> SearchOutOfStockProducts()
+    {
+        try
+        {
+            List<Product> products = _productRepository.GetOutOfStockProducts();
+
+            if (!products.Any())
+            {
+                Console.WriteLine("No products found");
+            }
+            return products;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"讀取產品列表失敗: {e.Message}");
+            return new List<Product>();
+        }
+    }
 }

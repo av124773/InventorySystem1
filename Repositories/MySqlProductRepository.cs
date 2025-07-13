@@ -173,4 +173,45 @@ public class MySqlProductRepository : IProductRepository
             }
         }
     }
+    
+    public List<Product> GetOutOfStockProducts()
+    {
+        List<Product> products = new List<Product>();
+        using (var connection = new MySqlConnection(_connectionString))
+        {
+            connection.Open();
+            string selectSql = "SELECT * FROM products WHERE quantity = 0 ";
+            // 1 box
+            // 2 dish
+            // 3 phone
+            using (MySqlCommand cmd = new MySqlCommand(selectSql, connection))
+            {
+                using (MySqlDataReader reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                        // reader =  1 box -> reader = 2 dish -> reader = 3 phone
+                    {
+                        // 1.origin way
+                        // Product product = new Product(reader.GetInt32("id"),
+                        //     reader.GetString("name"),
+                        //     reader.GetDecimal("price"),
+                        //     reader.GetInt32("quantity"));
+                        // product.Status = (Product.ProductStatus)reader.GetInt32("status");
+                        // products.Add(product);
+                        
+                        // 2.obj initializer
+                        products.Add(new Product(reader.GetInt32("id"),
+                            reader.GetString("name"),
+                            reader.GetDecimal("price"),
+                            reader.GetInt32("quantity"))
+                        {
+                            Status = (Product.ProductStatus)reader.GetInt32("status")
+                        });
+                    }
+                }
+            }
+        }
+
+        return products;
+    }
 }

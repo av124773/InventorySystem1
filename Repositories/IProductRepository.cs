@@ -9,4 +9,5 @@ public interface IProductRepository
     void AddProduct(Product product);
     int GetNextProductId();
     void UpdateProduct(Product product);
+    List<Product> GetOutOfStockProducts();
 }

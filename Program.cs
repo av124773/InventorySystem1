@@ -73,6 +73,8 @@ void RunMenu()
                 break;
             case "6": SearchLowStock();
                 break;
+            case "7": SearchOutOfStockProducts();
+                break;
             case "0": 
                 Console.WriteLine("Goodbye !");
                 return;
@@ -90,6 +92,7 @@ void DisplayMenu()
     Console.WriteLine("4. 更新產品");
     Console.WriteLine("5. 查詢產品");
     Console.WriteLine("6. 查詢庫存偏低");
+    Console.WriteLine("7. 查詢已缺貨產品");
     Console.WriteLine("0. 離開");
 }
 
@@ -148,6 +151,23 @@ void SearchLowStock()
     if (products.Any())
     {
         Console.WriteLine($"-------------- 查詢條件為: (低庫存) ------------");
+        Console.WriteLine("ID | Name | Price | Quantity | Status");
+        Console.WriteLine("-----------------------------------------------");
+        foreach (var product in products)
+        {
+            Console.WriteLine(product);
+        }
+        Console.WriteLine("-----------------------------------------------");
+    }
+}
+
+void SearchOutOfStockProducts()
+{
+    Console.WriteLine("查詢已缺貨產品:");
+    List<Product> products = inventoryServices.SearchOutOfStockProducts();
+    if (products.Any())
+    {
+        Console.WriteLine($"-------------- 查詢條件為: (缺貨) ------------");
         Console.WriteLine("ID | Name | Price | Quantity | Status");
         Console.WriteLine("-----------------------------------------------");
         foreach (var product in products)
