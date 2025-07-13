@@ -69,6 +69,8 @@ void RunMenu()
                 break;
             case "4": UpdateProduct();
                 break;
+            case "5": SearchProduct();
+                break;
             case "0": 
                 Console.WriteLine("Goodbye !");
                 return;
@@ -84,6 +86,8 @@ void DisplayMenu()
     Console.WriteLine("2. 查詢產品");
     Console.WriteLine("3. 新增產品");
     Console.WriteLine("4. 更新產品");
+    Console.WriteLine("5. 查詢產品");
+    Console.WriteLine("6. 查詢庫存偏低");
     Console.WriteLine("0. 離開");
 }
 
@@ -114,6 +118,24 @@ void SearchProduct()
         Console.WriteLine("ID | Name | Price | Quantity | Status");
         Console.WriteLine("-----------------------------------------------");
         Console.WriteLine(product);
+        Console.WriteLine("-----------------------------------------------");
+    }
+}
+
+void SearchProduct()
+{
+    Console.WriteLine("查詢產品名稱關鍵字:");
+    string input = Console.ReadLine();
+    List<Product> products = inventoryServices.SearchProducts(input);
+    if (products.Any())
+    {
+        Console.WriteLine($"-------------- 查詢條件為: ({input}) ------------");
+        Console.WriteLine("ID | Name | Price | Quantity | Status");
+        Console.WriteLine("-----------------------------------------------");
+        foreach (var product in products)
+        {
+            Console.WriteLine(product);
+        }
         Console.WriteLine("-----------------------------------------------");
     }
 }

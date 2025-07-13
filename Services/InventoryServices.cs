@@ -1,6 +1,7 @@
 ﻿using InventorySyetem1.Models;
 using InventorySyetem1.Repositories;
 using InventorySyetem1.Utils;
+using Org.BouncyCastle.Bcpg;
 
 namespace InventorySyetem1.Services;
 
@@ -115,4 +116,35 @@ public class InventoryServices
             throw;
         }
     }
+
+    public List<Product> SearchProducts(string? input)
+    {
+        try
+        {
+            List<Product> products = _productRepository.GetAllProducts();
+            if (string.IsNullOrWhiteSpace(input))
+            {
+                return products;
+            }
+            
+            var results = products
+                .Where(product => product.Name.ToLower().Contains(input.ToLower()))
+                .OrderBy(product => product.Name)
+                .ToList();
+            // var results = products.Where(product => keyword(product, input)).ToList();
+
+            if (!results.Any())
+            {
+                Console.WriteLine("No products found!");
+            }
+
+            return results;
+        }
+        catch (Exception e)
+        {
+            Console.WriteLine($"讀取產品列表失敗: {e.Message}");
+            return new List<Product>();
+        }
+    }
+
 }
